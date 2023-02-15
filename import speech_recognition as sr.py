@@ -15,6 +15,7 @@ def speakerListener():
     #n is 5... but remember 3n is 7                <==      *IMPORTSNT*
     #english en-in, en-us
     #mandarin zh
+    #WWOH DUH MING ZSOU SU FUN WHEN BIENG 
     #wo de ming zi shi fun wen bing ==> My name is Fun Wen-Bing (Calvin)
     #####################################################################
     try: 
