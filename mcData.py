@@ -1,24 +1,41 @@
 #Rocio's API reading class
-import pandas
 import csv
+import pandas as pd
  
 menu =[]
+itemInf = []
+dataInf = []
+menuItem = []
+df = pd.read_csv('menu.csv')
+
 # reading the CSV file
 with open('menu.csv') as menuData:
     m = csv.reader(menuData) 
-    dataInf = next(menuData)
+    dataInf = next(menuData).split(",")#delimeter for commas
     #adding rows of each menu item (with nutritional info) to menu array
     for row in m: 
         menu.append(row)
- 
+
+#all information available from database(calories, sat fats, sodium, carbs, sugar)
 def dataInfo():
     return dataInf
 
+#everything in the database
 def allData():
     return menu
- 
-#get category of menu item
-#copy method and change index in return portion to fit certain info needed
+
+#menu item with all of their nutritional info
+def itemInfo(item):
+    for menuItem in menu:
+        for name in menuItem:
+            if(item == name):
+                for i in range(25):
+                    itemInf.append(dataInf[i] + ": " + menuItem[i])
+    return itemInf
+#Admin can change price
+def changePrice(item, nPrice):
+    df.loc[0 ,'Price'] = nPrice
+    df.to_csv("menu.csv", index=False)
 
 #gets catgeory of item: breakfast, beef & pork, chicken & fish, salads snacks and sides
 #desserts, beverages, coffee and tea, smoothies and shakes
@@ -205,11 +222,20 @@ def getIronDailyPerc(item):
             if(item == name):
                 return menu[indexItem][23]
         indexItem = indexItem + 1
+#gets price of item 
+def getPrice(item):
+    indexItem = 0
+    for menuItem in menu:
+        for name in menuItem:
+            if(item == name):
+                return menu[indexItem][24]
+        indexItem = indexItem + 1
 
 #checking
-print(dataInfo())
-#print(allData())
 eggMc = "Egg McMuffin"
+print(dataInfo())
+print(itemInfo(eggMc))
+
 print("Item: "+ eggMc)
 print("Category: " + getCategory(eggMc))
 print("Serving Size: " + getServingSize(eggMc))
@@ -222,3 +248,19 @@ print("Saturated Fat Daily Perc: " + getSatFatDailyPerc(eggMc))
 print("Trans Fat: "+ getTransFat(eggMc))
 print("Cholesterol: " + getCholesterol(eggMc))
 print("Cholesterol Daily Perc: "+ getCholesterolDailyPerc(eggMc))
+print("Sodium: " + getSodium(eggMc))
+print("Sodium Daily Perc: "+ getSodiumDailyPerc(eggMc))
+print("Carb: "+ getCarbs(eggMc))
+print("Carb Daily Perc: " + getCarbsDailyPerc(eggMc))
+print("Dietary Fiber: "+ getDietaryFiber(eggMc))
+print("Dietary Fiber Daily Perc: "+ getDietaryFiberDailyPerc(eggMc))
+print("Sugar: "+ getSugar(eggMc))
+print("Protein: "+ getProtein(eggMc))
+print("Viatim A: "+ getVitaminA(eggMc))
+print("Vitaim C: "+ getVitaminC(eggMc))
+print("Calcium Daily Perc: "+ getCalciumDailyPerc(eggMc))
+print("Iron Daily Perc: "+ getIronDailyPerc(eggMc))
+print("Price: "+ getPrice(eggMc))
+print("Changing Price to 3")
+#changePrice(eggMc, "3")
+print("Price: "+ getPrice(eggMc))
