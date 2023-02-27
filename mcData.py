@@ -52,7 +52,7 @@ def getServingSize(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][2]
+                return menu[indexItem][2] + ""
         indexItem = indexItem + 1
 #gets calories of item
 def getCalories(item):
@@ -76,7 +76,7 @@ def getTotalFat(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][5]
+                return menu[indexItem][5]+ "g"
         indexItem = indexItem + 1
 #gets percentage that the fat contained in item is of the daily percentage
 def getFatDailyPerc(item):
@@ -84,7 +84,7 @@ def getFatDailyPerc(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][6]
+                return menu[indexItem][6]+ "%"
         indexItem = indexItem + 1
 #gets saturated fat of item
 def getSatFat(item):
@@ -92,7 +92,7 @@ def getSatFat(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][7]
+                return menu[indexItem][7]+ "g"
         indexItem = indexItem + 1
 #gets percentage that the saturated fat contained in item is of the daily percentage
 def getSatFatDailyPerc(item):
@@ -100,7 +100,7 @@ def getSatFatDailyPerc(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][8]
+                return menu[indexItem][8]+ "%"
         indexItem = indexItem + 1
 #gets trans fat of item
 def getTransFat(item):
@@ -108,7 +108,7 @@ def getTransFat(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][9]
+                return menu[indexItem][9]+ "g"
         indexItem = indexItem + 1
 #gets total cholesterol of item
 def getCholesterol(item):
@@ -116,7 +116,7 @@ def getCholesterol(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][10]
+                return menu[indexItem][10]+ "mg"
         indexItem = indexItem + 1
 #gets percentage that the cholesterol contained in item is of the daily percentage
 def getCholesterolDailyPerc(item):
@@ -124,7 +124,7 @@ def getCholesterolDailyPerc(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][11]
+                return menu[indexItem][11]+ "%"
         indexItem = indexItem + 1
 #gets total sodium of item
 def getSodium(item):
@@ -132,7 +132,7 @@ def getSodium(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][12]
+                return menu[indexItem][12]+ "mg"
         indexItem = indexItem + 1
 #gets percentage that the sodium contained in item is of the daily percentage
 def getSodiumDailyPerc(item):
@@ -140,7 +140,7 @@ def getSodiumDailyPerc(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][13]
+                return menu[indexItem][13]+ "%"
         indexItem = indexItem + 1
 #gets total carbohydrate(carbs) of item
 def getCarbs(item):
@@ -148,7 +148,7 @@ def getCarbs(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][14]
+                return menu[indexItem][14]+ "g"
         indexItem = indexItem + 1
 #gets percentage that the carbohydrates(carbs) contained in item is of the daily percentage
 def getCarbsDailyPerc(item):
@@ -156,7 +156,7 @@ def getCarbsDailyPerc(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][15]
+                return menu[indexItem][15]+ "%"
         indexItem = indexItem + 1
 #gets total dietary fiber of item
 def getDietaryFiber(item):
@@ -164,7 +164,7 @@ def getDietaryFiber(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][16]
+                return menu[indexItem][16]+ "g"
         indexItem = indexItem + 1
 #gets percentage that the dietary fiber contained in item is of the daily percentage
 def getDietaryFiberDailyPerc(item):
@@ -172,7 +172,7 @@ def getDietaryFiberDailyPerc(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][17]
+                return menu[indexItem][17]+ "%"
         indexItem = indexItem + 1
 #gets total sugars of item
 def getSugar(item):
@@ -180,7 +180,7 @@ def getSugar(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][18]
+                return menu[indexItem][18]+ "g"
         indexItem = indexItem + 1
 #gets total Protein of item
 def getProtein(item):
@@ -188,7 +188,7 @@ def getProtein(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][19]
+                return menu[indexItem][19]+ "g"
         indexItem = indexItem + 1
 #gets total Vitamin A of item
 def getVitaminA(item):
@@ -196,7 +196,7 @@ def getVitaminA(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][20]
+                return menu[indexItem][20]+ "%"
         indexItem = indexItem + 1
 #gets total Vitamin C of item
 def getVitaminC(item):
@@ -204,7 +204,7 @@ def getVitaminC(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][21]
+                return menu[indexItem][21]+ "%"
         indexItem = indexItem + 1
 #gets percentage that the calcium contained in item is of the daily percentage
 def getCalciumDailyPerc(item):
@@ -212,7 +212,7 @@ def getCalciumDailyPerc(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][22]
+                return menu[indexItem][22]+ "%"
         indexItem = indexItem + 1
 #gets percentage that the iron contained in item is of the daily percentage
 def getIronDailyPerc(item):
@@ -220,7 +220,7 @@ def getIronDailyPerc(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][23]
+                return menu[indexItem][23]+ "%"
         indexItem = indexItem + 1
 #gets price of item 
 def getPrice(item):
@@ -228,7 +228,7 @@ def getPrice(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return menu[indexItem][24]
+                return "$" + menu[indexItem][24]
         indexItem = indexItem + 1
 
 #checking
@@ -262,5 +262,5 @@ print("Calcium Daily Perc: "+ getCalciumDailyPerc(eggMc))
 print("Iron Daily Perc: "+ getIronDailyPerc(eggMc))
 print("Price: "+ getPrice(eggMc))
 print("Changing Price to 3")
-#changePrice(eggMc, "3")
+changePrice(eggMc, "3.17")
 print("Price: "+ getPrice(eggMc))
