@@ -13,6 +13,7 @@ def speakerListener():
         recording.adjust_for_ambient_noise(source)
         print("Listening... ")
         audio = recording.listen(source)
+        print("Recognizing... ")
         global wasSaid, words
     ####################################################################
     #random stuff DO NOT ignoge
@@ -100,7 +101,7 @@ def clarify(list):
     regList=[]
     for value in list[list.index("Items ==> ")+1:]:
         newList.append(value.replace("With"," (").split(" (")[0])
-        regList.extend(value.replace("With"," (").replace(")"," (").split(" (")[1:])
+        regList.extend(value.replace("With"," (").replace(")"," (").split(" (")[1:].remove(""))
     for item in newList:
         if newList.count(item)>1:
             print("ask for clarification of tags")
