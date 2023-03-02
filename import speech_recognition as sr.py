@@ -28,6 +28,7 @@ def speakerListener():
         saying = recording.recognize_google(audio, language='en-in')
         wasSaid= (str)(saying)
         wasSaid= wasSaid.title()
+        return wasSaid
         #print("You said: ",wasSaid)
     except Exception as e:
         print(e)
@@ -64,16 +65,6 @@ def match(words):
         count+=1
         actual=key.split(" (")[0]
         actual=actual.split("With")[0]
-        #print("actual then words ",actual,'\n',words)
-        #print("\n",str(actual) in str(words),"\n\n")
-        #print(str(words).find(actual))
-        
-        #print(words.find(actual))
-        #if "Vanilla Shake" in words:
-         #       print("yes maam",words)
-         #i literally dont know  why the below dont work
-        #print(count)
-        #print("tag: ",actual,"what was said: ",words)
         if actual in words:
             tags.extend(senStemsWTags[key])
             keys.append(key)
@@ -94,20 +85,23 @@ print(match(wasSaid.title()))
 
 
 #clarification method to get specfic tags
+copy=wasSaid.title()
 def clarify(list):
     #re.split(r'#|#',(str))
-    copy=wasSaid.title()
     newList=[]
     regList=[]
     for value in list[list.index("Items ==> ")+1:]:
         newList.append(value.replace("With"," (").split(" (")[0])
-        regList.extend(value.replace("With"," (").replace(")"," (").split(" (")[1:].remove(""))
+        regList.extend(value.replace("With"," (").replace(")"," (").split(" (")[1:])
     for item in newList:
         if newList.count(item)>1:
-            print("ask for clarification of tags")
+            print("")
     return regList
 
+#should return the clarifying tags
 print(clarify(tags))
+
+
 
 
 #buying method if order
