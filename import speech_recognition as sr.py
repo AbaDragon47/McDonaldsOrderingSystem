@@ -35,8 +35,8 @@ def speakerListener():
     #words = str(wasSaid).split(' ')
     #print("this is the list: ",words)
     
-speakerListener()
-
+#speakerListener()
+wasSaid="I Want A Big Mac A Vanilla Shake A Dr Pepper A McRib A McDouble A Sausage McGriddles And A Cheeseburger"
 #Dict is a 'Map' in python
 
 #need to make a method  that take everything in spreadsheet, put it into dict
@@ -68,6 +68,10 @@ def match(words):
         if actual in words:
             tags.extend(senStemsWTags[key])
             keys.append(key)
+            print("")
+    print("the entire dictionary: ",senStemsWTags)        
+    print("tags in first method: ",tags)
+    print("keys in first method: ",keys)
 
     for item in tags:
         if isinstance(item,float):
@@ -83,19 +87,24 @@ def match(words):
 
 print(match(wasSaid.title()))
 
-
+#remember dictionary put items in order as they appear in menu
 #clarification method to get specfic tags
 copy=wasSaid.title()
 def clarify(list):
+    indicies=[]
     #re.split(r'#|#',(str))
     newList=[]
     regList=[]
     for value in list[list.index("Items ==> ")+1:]:
         newList.append(value.replace("With"," (").split(" (")[0])
         regList.extend(value.replace("With"," (").replace(")"," (").split(" (")[1:])
+    c=0
     for item in newList:
         if newList.count(item)>1:
+            indicies.append(c)
+            c+=1
             print("")
+    print("newList: ",newList)
     return regList
 
 #should return the clarifying tags
