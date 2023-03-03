@@ -24,6 +24,12 @@ def dataInfo():
 def allData():
     return menu
 
+#return menu items in an String array
+def menuItems():
+    for item in menu:
+        menuItem.append(item[1])
+    return menuItem
+
 #menu item with all of their nutritional info
 def itemInfo(item):
     for menuItem in menu:
@@ -231,6 +237,33 @@ def getPrice(item):
                 return "$" + menu[indexItem][24]
         indexItem = indexItem + 1
 
+
+cart = []
+cartAdded = False
+orderAgain = False
+#grab specfic item user wants to order and adds it to cart(array of food items)
+#returns boolean if order was placed
+def order(itemArr):
+    cart.append(itemArr)
+
+    print("Your item was added!\nWould you like to order anything else (y/n)?")
+    answ = speakerListener()
+    if(answ.contains("y")):
+        orderAgain = True
+    if(orderAgain):
+        for itemsOrdering in clarify():
+            order(itemsOrdering)
+    else:
+        print("You've finished ordering!")
+        return True
+        
+
+
+    
+
+
+
+
 #checking
 eggMc = "Egg McMuffin"
 print(dataInfo())
@@ -262,5 +295,7 @@ print("Calcium Daily Perc: "+ getCalciumDailyPerc(eggMc))
 print("Iron Daily Perc: "+ getIronDailyPerc(eggMc))
 print("Price: "+ getPrice(eggMc))
 print("Changing Price to 3")
-changePrice(eggMc, "3.17")
+changePrice(eggMc, "3.2")
 print("Price: "+ getPrice(eggMc))
+
+print(menuItems())
