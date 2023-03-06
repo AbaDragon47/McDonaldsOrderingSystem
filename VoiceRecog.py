@@ -1,12 +1,58 @@
 from gtts import gTTS
 import os
-
+import mcData as mD
 import speech_recognition as sr
 from numpy import loadtxt
 import tensorflow as tf
 from keras.models import Sequential
 from pandas import read_excel
-#CALVIN  FUNNNNNNN
+
+from gtts import gTTS 
+import os
+cart = []
+total = 0
+
+#grab specfic item user wants to order and adds it to cart(array of food items)
+def order(item):
+    cart.extend(item)
+    total = total + mD.getPrice(item) #adding up price of order
+    speaking="Your item was added!\nWould you like to order anything else (y/n)?"
+    
+    speech=gTTS(text=speaking, lang= 'en',slow=False)
+    speech.save("speaking.mp3")
+    os.system("start speaking.mp3")
+    print(speaking)
+    answ = speakerListener()
+
+    if(answ.contains("Y")):
+        print("What would you like to order?")
+        answ = speakerListener() #speakers reponse
+        tags = match(answ) #returns list of key words in response
+        listItems = clarify(tags) #figures out what items it wants to order from key words, returns a list
+        if listItems.len > 0:
+            massOrder(listItems)
+        order(listItems[0])
+    #after finishing ordering, calls methods for paying
+    else:
+        print("You've finished ordering!\nYour total is: " + total)
+        remaining = mD.getCardAmount() - total
+        print("Your bank account balance is: " + remaining)
+        print("Your food will be delivered in 15 min\nP.S ice cream machine still broken..." )
+
+        
+#method when ordering more than 1 item at a time
+def massOrder(listItems):
+    numberOfItems = listItems.len
+    for i in range(numberOfItems):
+        mItem = listItems[i]
+        if i == numberOfItems-1:
+            order(mItem)
+        cart.append(mItem)
+        total = total + getPrice(mItem)  
+  
+# Using the special variable 
+# __name__
+
 def speakerListener():
     recording = sr.Recognizer()
     with sr.Microphone() as source: 
@@ -36,7 +82,7 @@ def speakerListener():
     #print("this is the list: ",words)
     
 #speakerListener()
-wasSaid="I Want A Big Mac A Vanilla Shake A Dr Pepper A McRib A McDouble A Sausage McGriddles And A Cheeseburger"
+#wasSaid="I Want A Big Mac A Vanilla Shake A Dr Pepper A McRib A McDouble A Sausage McGriddles And A Cheeseburger"
 #Dict is a 'Map' in python
 
 #need to make a method  that take everything in spreadsheet, put it into dict
@@ -71,7 +117,7 @@ def match(words):
             print("")
     #print("the entire dictionary: ",senStemsWTags)        
     #print("tags in first method: ",tags)
-    print("keys in first method: ",keys)
+    #print("keys in first method: ",keys)
 
     for item in tags:
         if isinstance(item,float):
@@ -85,25 +131,25 @@ def match(words):
     else:
         return tags 
 
-print(match(wasSaid.title()))
+#print(match(speakerListener().title()))
 
 #remember dictionary put items in order as they appear in menu
 #clarification method to get specfic tags
-copy=wasSaid.title()
-regList=[]
+#copy=wasSaid.title()
+
 def clarify(list):
     returning=[]
     #re.split(r'#|#',(str))
     newList=[]
-    
+    regList=[]
     for value in list[list.index("Items ==> ")+1:]:
         newList.append(value.replace("With"," (").split(" (")[0])
         regList.extend(value.replace("With"," (").replace(")"," (").split(" (")[1:-1])
         #print ("regList: ",regList)
         
  
-    print("newList: ",newList)#in order as it is in the dict
-    print("reg: ",regList)
+   # print("newList: ",newList)#in order as it is in the dict
+    #print("reg: ",regList)
     #how to check which key based on tags vvv
     needToCheck=[]
     #whatTosay="Could you clarify what you want pls "
@@ -133,15 +179,15 @@ def clarify(list):
                         if newList.count(item.replace("With"," (").replace(")"," (").split(" (")[0])<2:
                             returning.append(item)
                     else:
-                        print("Final: ",final)
-                        print("clarification identifiers: ",item.replace("With"," (").replace(")"," (").split(" ("))
+                        #print("Final: ",final)
+                        #print("clarification identifiers: ",item.replace("With"," (").replace(")"," (").split(" ("))
                         if all(x in final for x in item.replace("With"," (").replace(")"," (").split(" (")[:-1]):
-                            print("yes!  ",item)
+                            #print("yes!  ",item)
                             returning.append(item)
             
-                print("\nValue: ",value)
-                print("\nfinal: ",final)
-                print("\nreturning: ",returning)
+               # print("\nValue: ",value)
+                #print("\nfinal: ",final)
+                #print("\nreturning: ",returning)
                 #ok it works but it just returns the other stuff too when the program runs
                 #neverrrr mindddddddd we doneeeeeeeeeeee (technically but i never made the tags to keys method... this just keys to tags)
                 #AWESOME JOB ABAAAAAAAAAAA!
@@ -157,11 +203,25 @@ def listContains(list1,list2):
             if m==n:
                 return m
 #should return the clarifying tags
-print("reglist: ",regList)
-print(clarify(tags))
+#print("reglist: ",regList)
+#print(clarify(tags))
 
 
+# Defining main function
+def main():
+    speaking="Hello customer!\nWhat would you like to do today?"
+    print(speaking)
+    speech=gTTS(text=speaking, lang= 'en',slow=False)
+    speech.save("speak.mp3")
+    os.system("start speak.mp3")
+    iWant=speakerListener().title()
+    whatCustomerWants=match(iWant)
+    if "order" in whatCustomerWants:
+        speaking="Oh, then you would like to order? Lets see..."
+        order(clarify(whatCustomerWants))
 
+if __name__=="__main__":
+    main()
 
 #buying method if order
 #def matchTags():

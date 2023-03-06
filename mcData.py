@@ -237,7 +237,7 @@ def getPrice(item):
                 return "$" + menu[indexItem][24]
         indexItem = indexItem + 1
 
-
+"""
 cart = []
 total = 0
 #grab specfic item user wants to order and adds it to cart(array of food items)
@@ -317,4 +317,4 @@ print("Changing Price to 3")
 changePrice(eggMc, "3.2")
 print("Price: "+ getPrice(eggMc))
 
-print(menuItems())
+print(menuItems())"""
