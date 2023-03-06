@@ -69,8 +69,8 @@ def match(words):
             tags.extend(senStemsWTags[key])
             keys.append(key)
             print("")
-    print("the entire dictionary: ",senStemsWTags)        
-    print("tags in first method: ",tags)
+    #print("the entire dictionary: ",senStemsWTags)        
+    #print("tags in first method: ",tags)
     print("keys in first method: ",keys)
 
     for item in tags:
@@ -90,24 +90,72 @@ print(match(wasSaid.title()))
 #remember dictionary put items in order as they appear in menu
 #clarification method to get specfic tags
 copy=wasSaid.title()
+regList=[]
 def clarify(list):
-    indicies=[]
+    returning=[]
     #re.split(r'#|#',(str))
     newList=[]
-    regList=[]
+    
     for value in list[list.index("Items ==> ")+1:]:
         newList.append(value.replace("With"," (").split(" (")[0])
-        regList.extend(value.replace("With"," (").replace(")"," (").split(" (")[1:])
-    c=0
+        regList.extend(value.replace("With"," (").replace(")"," (").split(" (")[1:-1])
+        #print ("regList: ",regList)
+        
+ 
+    print("newList: ",newList)#in order as it is in the dict
+    print("reg: ",regList)
+    #how to check which key based on tags vvv
+    needToCheck=[]
+    #whatTosay="Could you clarify what you want pls "
+    whatTosay=""
     for item in newList:
         if newList.count(item)>1:
-            indicies.append(c)
-            c+=1
-            print("")
-    print("newList: ",newList)
-    return regList
+            needToCheck.append(item)
+    i=0
+    for value in list[list.index("Items ==> ")+1:]:
+        if value.replace("With"," (").split(" (")[0] == needToCheck[0]:
+            whatTosay+=("\n")+regList[i]
+            a=needToCheck.count(needToCheck[0])
+            needToCheck.remove(needToCheck[0])
+            i+=1
+            if a<2 or len(needToCheck)==0:
+                i=0
+                print("Could you clarify what you want pls ",whatTosay)
+                ans=whatTosay.split()
+                sec=speakerListener().split()
+                final=listContains(ans,sec)
+                #returning.append(list.index(value.replace("With"," (").split(" (")[0])+regList.index(final))
+                for item in list[list.index("Items ==> ")+1:]:
+                    if item.replace("With"," (").replace(")"," (").split(" (")[0]!=value.replace("With"," (").replace(")"," (").split(" (")[0]:
+                        returning.append(item)
+                    else:
+                        print("Final: ",final.split())
+                        print("clarification identifiers: ",item.replace("With"," (").replace(")"," (").split(" ("))
+                        if final in item.replace("With"," (").replace(")"," (").split(" ("):
+                            print("yes!  ",item)
+                            returning.append(item)
+            
+                print("\nValue: ",value.replace("With"," (").split(" (")[0])
+                print("\nfinal: ",final)
+                print("\nreturning: ",returning)
+                #ok it works but it just returns the other stuff too when the program runs
+                #AWESOME JOB ABAAAAAAAAAAA!
+            
+   # for i in range(len(needToCheck))-1:
+    #    a=needToCheck.count(needToCheck[i])
+     #   if needToCheck.count(needToCheck[i]>1):
+      #      whatTosay+="\n",regList[i]
 
+
+    return returning
+
+def listContains(list1,list2):
+    for m in list1:
+        for n in list2:
+            if m==n:
+                return m
 #should return the clarifying tags
+print("reglist: ",regList)
 print(clarify(tags))
 
 
