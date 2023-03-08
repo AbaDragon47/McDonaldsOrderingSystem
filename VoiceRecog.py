@@ -48,7 +48,7 @@ def massOrder(listItems):
         if i == numberOfItems-1:
             order(mItem)
         cart.append(mItem)
-        total = total + getPrice(mItem)  
+        total = total + mD.getPrice(mItem)  
   
 # Using the special variable 
 # __name__
@@ -207,7 +207,7 @@ def listContains(list1,list2):
 #print(clarify(tags))
 
 
-# Defining main function
+#Defining main function
 def main():
     speaking="Hello customer!\nWhat would you like to do today?"
     print(speaking)
