@@ -4,14 +4,15 @@ import numpy as np
 #Creating a new class of the user information and data
 class User:
     #Constructors
-    def __init__(self, name : str, password : str, itemPreferences : list, previousOrders : set):
+    def __init__(self, name : str, password : str, *, itemPreferences = [], previousOrders = []):
         self.name = name
         self.password = password
-        self.itemPreferences, self.previousOrders = []
+        self.itemPreferences = []
+        self.previousOrders = []
 
     #Methods
     def addOrder(self, list : list):
-        self.previousOrders.__add__(list)
+        self.previousOrders.append(list)
         
 
 
@@ -22,5 +23,8 @@ def main():
     print(p1.password)
     order = [1, 2, 3, 4, 5]
     p1.addOrder(order)
+    order = [1, 2, 3, 4, 5, 6]
+    p1.addOrder(order)
     print(p1.previousOrders)
 
+main()
