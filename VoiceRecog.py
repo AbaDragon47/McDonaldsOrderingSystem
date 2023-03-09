@@ -6,49 +6,14 @@ from numpy import loadtxt
 import tensorflow as tf
 from keras.models import Sequential
 from pandas import read_excel
-
+#import pyttsx3
 from gtts import gTTS 
 import os
 cart = []
-total = 0
+
+total=0
 
 #grab specfic item user wants to order and adds it to cart(array of food items)
-def order(item):
-    cart.extend(item)
-    total = total + mD.getPrice(item) #adding up price of order
-    speaking="Your item was added!\nWould you like to order anything else (y/n)?"
-    
-    speech=gTTS(text=speaking, lang= 'en',slow=False)
-    speech.save("speaking.mp3")
-    os.system("start speaking.mp3")
-    print(speaking)
-    answ = speakerListener()
-
-    if(answ.contains("Y")):
-        print("What would you like to order?")
-        answ = speakerListener() #speakers reponse
-        tags = match(answ) #returns list of key words in response
-        listItems = clarify(tags) #figures out what items it wants to order from key words, returns a list
-        if listItems.len > 0:
-            massOrder(listItems)
-        order(listItems[0])
-    #after finishing ordering, calls methods for paying
-    else:
-        print("You've finished ordering!\nYour total is: " + total)
-        remaining = mD.getCardAmount() - total
-        print("Your bank account balance is: " + remaining)
-        print("Your food will be delivered in 15 min\nP.S ice cream machine still broken..." )
-
-        
-#method when ordering more than 1 item at a time
-def massOrder(listItems):
-    numberOfItems = listItems.len
-    for i in range(numberOfItems):
-        mItem = listItems[i]
-        if i == numberOfItems-1:
-            order(mItem)
-        cart.append(mItem)
-        total = total + getPrice(mItem)  
   
 # Using the special variable 
 # __name__
@@ -60,7 +25,7 @@ def speakerListener():
         print("Listening... ")
         audio = recording.listen(source)
         print("Recognizing... ")
-        global wasSaid, words
+        global words
     ####################################################################
     #random stuff DO NOT ignoge
     #n is 5... but remember 3n is 7                <==      *IMPORTSNT*
@@ -74,10 +39,13 @@ def speakerListener():
         saying = recording.recognize_google(audio, language='en-in')
         wasSaid= (str)(saying)
         wasSaid= wasSaid.title()
-        return wasSaid
+        print("wasSaid type: ",type(wasSaid))
+        
         #print("You said: ",wasSaid)
     except Exception as e:
         print(e)
+        wasSaid= "Gimme A Sprite"
+    return wasSaid
     #words = str(wasSaid).split(' ')
     #print("this is the list: ",words)
     
@@ -87,6 +55,43 @@ def speakerListener():
 
 #need to make a method  that take everything in spreadsheet, put it into dict
 # then can take what was said in listening() and figure out what person wants
+def order(item):
+    global total
+    cart.extend(item)
+    total = total+1
+    print((mD.getPrice(item))) #adding up price of order
+    speaking="Your item was added!\nWould you like to order anything else (y/n)?"
+    
+    #speech=gTTS(text=speaking, lang= 'en',slow=False)
+    #speech.save("speaking.mp3")
+    #os.system("start speaking.mp3")
+    print(speaking)
+    answ = speakerListener().title()
+    if "Yes" in answ:
+        print("What would you like to order?")
+        answ = speakerListener() #speakers reponse
+        tags = match(answ) #returns list of key words in response
+        listItems = clarify(tags) #figures out what items it wants to order from key words, returns a list
+        if listItems.len > 0:
+            massOrder(listItems)
+        order(listItems[0])
+    #after finishing ordering, calls methods for paying
+    else:
+        print("You've finished ordering!\nYour total is: $",""+total)
+        remaining = mD.getCardAmount() - total
+        print("Your bank account balance is: " + remaining)
+        print("Your food will be delivered in 15 min\nP.S ice cream machine still broken..." )
+
+        
+#method when ordering more than 1 item at a time
+def massOrder(listItems):
+    numberOfItems = listItems.len
+    for i in range(numberOfItems):
+        mItem = listItems[i]
+        if i == numberOfItems-1:
+            order(mItem)
+        cart.append(mItem)
+        total = total + mD.getPrice(mItem)  
 
 senStemsWTags= dict()
 qSheet= "questions"
@@ -142,12 +147,14 @@ def clarify(list):
     #re.split(r'#|#',(str))
     newList=[]
     regList=[]
+    print("list in clarify: ",list)
     for value in list[list.index("Items ==> ")+1:]:
-        newList.append(value.replace("With"," (").split(" (")[0])
-        regList.extend(value.replace("With"," (").replace(")"," (").split(" (")[1:-1])
-        #print ("regList: ",regList)
+        if(type(value) is not float):
+            newList.append(value.replace("With"," (").split(" (")[0])
+            regList.extend(value.replace("With"," (").replace(")"," (").split(" (")[1:-1])
+        print ("regList: ",regList)
         
- 
+    done=[]
    # print("newList: ",newList)#in order as it is in the dict
     #print("reg: ",regList)
     #how to check which key based on tags vvv
@@ -158,7 +165,13 @@ def clarify(list):
         if newList.count(item)>1:
             needToCheck.append(item)
     i=0
+    if len(needToCheck)==0:
+        for value in list[list.index("Items ==> ")+1:]:
+            done.append(value)
+        return done
     for value in list[list.index("Items ==> ")+1:]:
+        print("value: ",value.replace("With"," (").split(" (")[0])
+        print("needToCheck: ",needToCheck)
         if value.replace("With"," (").split(" (")[0] == needToCheck[0]:
             whatTosay+=("\n")+regList[i]
             a=needToCheck.count(needToCheck[0])
@@ -193,7 +206,7 @@ def clarify(list):
                 #AWESOME JOB ABAAAAAAAAAAA!
             
 
-    done=[]
+    
     [done.append(x) for x in returning if x not in done]
     return done
 
@@ -209,18 +222,27 @@ def listContains(list1,list2):
 
 # Defining main function
 def main():
-    speaking="Hello customer!\nWhat would you like to do today?"
-    print(speaking)
-    speech=gTTS(text=speaking, lang= 'en',slow=False)
-    speech.save("speak.mp3")
-    os.system("start speak.mp3")
+    #speech=gTTS(text=speaking, lang= 'en',slow=False)
+    #speech.save("speak.mp3")
+    #os.system("start speak.mp3")
     iWant=speakerListener().title()
     whatCustomerWants=match(iWant)
     if "order" in whatCustomerWants:
         speaking="Oh, then you would like to order? Lets see..."
-        order(clarify(whatCustomerWants))
-
+        print(speaking)
+        #speech=gTTS(text=speaking, lang= 'en',slow=False)
+        #speech.save("speaking.mp3")
+        #os.system("start speaking.mp3")
+        clarified=clarify(whatCustomerWants)
+        speaking="As of right now, this is what you have ordered: \n",clarified
+        print(speaking)
+        order(clarified)
+    else:
+        print("Could you please rephrase what you wanted with: ",whatCustomerWants)
+        main()
 if __name__=="__main__":
+    speaking="Hello customer!\nWhat would you like to do today?"
+    print(speaking)
     main()
 
 #buying method if order

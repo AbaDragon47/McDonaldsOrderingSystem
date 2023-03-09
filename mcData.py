@@ -1,15 +1,18 @@
 #Rocio's API reading class
 import csv
 import pandas as pd
+import os
  
 menu =[]
 itemInf = []
 dataInf = []
 menuItem = []
-df = pd.read_csv('menu.csv')
+#print(os.path.isfile('D:\\github stuff\\Robacal\\menu.csv'))
+#print(os.getcwd())
+df = pd.read_csv('D:\\github stuff\\Robacal\\menu.csv')
 
 # reading the CSV file
-with open('menu.csv') as menuData:
+with open('D:\\github stuff\\Robacal\\menu.csv') as menuData:
     m = csv.reader(menuData) 
     dataInf = next(menuData).split(",")#delimeter for commas
     #adding rows of each menu item (with nutritional info) to menu array
@@ -234,8 +237,10 @@ def getPrice(item):
     for menuItem in menu:
         for name in menuItem:
             if(item == name):
-                return "$" + menu[indexItem][24]
+                return menu[indexItem][24]
         indexItem = indexItem + 1
+def getCardAmount():
+    return 15
 
 """
 cart = []
