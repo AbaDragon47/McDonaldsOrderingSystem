@@ -1,18 +1,16 @@
-from gtts import gTTS
-import os
+#from gtts import gTTS
 import mcData as mD
 import speech_recognition as sr
 from numpy import loadtxt
 import tensorflow as tf
 from keras.models import Sequential
 from pandas import read_excel
-#import pyttsx3
-from gtts import gTTS 
+import pyttsx3
+#from gtts import gTTS 
 import os
 cart = []
-
 total=0
-
+engine= pyttsx3.init()
 #grab specfic item user wants to order and adds it to cart(array of food items)
   
 # Using the special variable 
@@ -44,7 +42,7 @@ def speakerListener():
         #print("You said: ",wasSaid)
     except Exception as e:
         print(e)
-        wasSaid= "Gimme A Sprite"
+        
     return wasSaid
     #words = str(wasSaid).split(' ')
     #print("this is the list: ",words)
@@ -77,9 +75,9 @@ def order(item):
         order(listItems[0])
     #after finishing ordering, calls methods for paying
     else:
-        print("You've finished ordering!\nYour total is: $",""+total)
+        print("You've finished ordering!\nYour total is: $",str(total))
         remaining = mD.getCardAmount() - total
-        print("Your bank account balance is: " + remaining)
+        print("Your bank account balance is: " + str(remaining))
         print("Your food will be delivered in 15 min\nP.S ice cream machine still broken..." )
 
         
@@ -119,7 +117,7 @@ def match(words):
         if actual in words:
             tags.extend(senStemsWTags[key])
             keys.append(key)
-            print("")
+
     #print("the entire dictionary: ",senStemsWTags)        
     #print("tags in first method: ",tags)
     #print("keys in first method: ",keys)
@@ -147,12 +145,10 @@ def clarify(list):
     #re.split(r'#|#',(str))
     newList=[]
     regList=[]
-    print("list in clarify: ",list)
     for value in list[list.index("Items ==> ")+1:]:
         if(type(value) is not float):
             newList.append(value.replace("With"," (").split(" (")[0])
             regList.extend(value.replace("With"," (").replace(")"," (").split(" (")[1:-1])
-        print ("regList: ",regList)
         
     done=[]
    # print("newList: ",newList)#in order as it is in the dict
@@ -170,8 +166,6 @@ def clarify(list):
             done.append(value)
         return done
     for value in list[list.index("Items ==> ")+1:]:
-        print("value: ",value.replace("With"," (").split(" (")[0])
-        print("needToCheck: ",needToCheck)
         if value.replace("With"," (").split(" (")[0] == needToCheck[0]:
             whatTosay+=("\n")+regList[i]
             a=needToCheck.count(needToCheck[0])
@@ -237,12 +231,26 @@ def main():
         speaking="As of right now, this is what you have ordered: \n",clarified
         print(speaking)
         order(clarified)
+    elif "more info" in whatCustomerWants:
+        speaking= "What do you want to know more about?"
+        iWant= speakerListener().title
+        clarified=clarify(whatCustomerWants)
+        if "Calories" in iWant:
+            for item in clarified[:-1]:
+                print("Well the ",item," has ",mD.getCalories(item),"calories")
+                if mD.getCalories(item)>10:
+                    print("This may make you fat")
+
     else:
         print("Could you please rephrase what you wanted with: ",whatCustomerWants)
         main()
 if __name__=="__main__":
     speaking="Hello customer!\nWhat would you like to do today?"
     print(speaking)
+    #engine.say(speaking)
+    #engine.runAndWait()
+
+
     main()
 
 #buying method if order
